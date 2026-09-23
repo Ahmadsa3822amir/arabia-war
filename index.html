@@ -6,60 +6,282 @@
   <title>Arabia War</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #101820;
+      background: #0d151b;
       color: white;
       font-family: Arial, sans-serif;
+    }
+
+    header {
       text-align: center;
-      padding: 40px 20px;
+      padding: 25px 15px;
+      background: #121f28;
+      border-bottom: 1px solid #263945;
     }
 
-    h1 {
+    header h1 {
+      margin: 0;
       color: #f0b24a;
-      font-size: 36px;
+      font-size: 32px;
     }
 
-    .box {
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 25px;
-      background: #182733;
+    header p {
+      color: #aebbc3;
+      margin-bottom: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .welcome {
+      text-align: center;
+      background: #172630;
+      padding: 20px;
       border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      margin-top: 0;
+      color: #f0b24a;
+    }
+
+    .countries {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .country {
+      background: #182832;
+      border: 1px solid #2b414e;
+      border-radius: 14px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .country:hover {
+      transform: translateY(-3px);
+      border-color: #f0b24a;
+      background: #213642;
+    }
+
+    .flag {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .country-name {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .role {
+      color: #aebbc3;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .stats {
+      display: none;
+      background: #172630;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid #3a4e5a;
+    }
+
+    .stats h2 {
+      color: #f0b24a;
+      margin-top: 0;
+    }
+
+    .stat {
+      margin: 12px 0;
+    }
+
+    .stat-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .bar {
+      height: 9px;
+      background: #293b45;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: #d89b32;
     }
 
     button {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 22px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .select-btn {
       background: #d89b32;
       color: white;
-      border: none;
-      padding: 14px 25px;
-      border-radius: 10px;
-      font-size: 18px;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .selected {
+      border-color: #f0b24a;
+      box-shadow: 0 0 12px rgba(240,178,74,0.25);
     }
   </style>
 </head>
 
 <body>
 
+<header>
   <h1>⚔️ Arabia War</h1>
+  <p>نسخه آزمایشی 0.2</p>
+</header>
 
-  <div class="box">
-    <h2>بازی با موفقیت اجرا شد ✅</h2>
-    <p>نسخه آزمایشی 0.1</p>
+<div class="container">
 
-    <button onclick="startGame()">
-      شروع بازی
-    </button>
-
-    <p id="message"></p>
+  <div class="welcome">
+    <h2>🌍 انتخاب قلمرو</h2>
+    <p>قلمرو خود را انتخاب کن و امپراتوری خودت را بساز.</p>
   </div>
 
-  <script>
-    function startGame() {
-      document.getElementById("message").innerHTML =
-        "🌍 آماده‌ایم تا نقشه بازی را بسازیم!";
-    }
-  </script>
+  <div class="countries" id="countries"></div>
+
+  <div class="stats" id="stats"></div>
+
+</div>
+
+<script>
+
+const countries = [
+
+  {name:"مصر", flag:"🇪🇬", role:"نیروی انسانی", economy:70, army:75, defense:65, resources:65},
+  {name:"عربستان", flag:"🇸🇦", role:"اقتصاد", economy:95, army:70, defense:65, resources:90},
+  {name:"عراق", flag:"🇮🇶", role:"متعادل", economy:70, army:78, defense:72, resources:85},
+  {name:"سوریه", flag:"🇸🇾", role:"دفاع زمینی", economy:50, army:70, defense:88, resources:60},
+  {name:"لبنان", flag:"🇱🇧", role:"تجارت", economy:75, army:50, defense:55, resources:45},
+  {name:"اردن", flag:"🇯🇴", role:"دفاع", economy:60, army:65, defense:85, resources:45},
+  {name:"فلسطین", flag:"🇵🇸", role:"دفاع منطقه‌ای", economy:45, army:55, defense:82, resources:40},
+  {name:"یمن", flag:"🇾🇪", role:"دفاع فرسایشی", economy:40, army:65, defense:85, resources:55},
+  {name:"لیبی", flag:"🇱🇾", role:"منابع", economy:70, army:60, defense:55, resources:95},
+  {name:"تونس", flag:"🇹🇳", role:"تجارت", economy:70, army:55, defense:60, resources:50},
+  {name:"الجزایر", flag:"🇩🇿", role:"قلمرو بزرگ", economy:75, army:80, defense:85, resources:80},
+  {name:"مراکش", flag:"🇲🇦", role:"اقتصاد و تجارت", economy:82, army:70, defense:72, resources:65},
+  {name:"موریتانی", flag:"🇲🇷", role:"منابع", economy:45, army:45, defense:55, resources:80},
+  {name:"سودان", flag:"🇸🇩", role:"نیروی انسانی", economy:50, army:68, defense:65, resources:75},
+  {name:"سومالی", flag:"🇸🇴", role:"موقعیت دریایی", economy:40, army:50, defense:60, resources:55},
+  {name:"جیبوتی", flag:"🇩🇯", role:"بندر تجاری", economy:60, army:40, defense:65, resources:45},
+  {name:"کومور", flag:"🇰🇲", role:"جزیره‌ای", economy:35, army:35, defense:75, resources:40},
+  {name:"کویت", flag:"🇰🇼", role:"اقتصاد قوی", economy:92, army:55, defense:65, resources:70},
+  {name:"بحرین", flag:"🇧🇭", role:"تجارت", economy:80, army:45, defense:60, resources:45},
+  {name:"قطر", flag:"🇶🇦", role:"اقتصاد", economy:96, army:50, defense:65, resources:60},
+  {name:"امارات", flag:"🇦🇪", role:"اقتصاد و فناوری", economy:94, army:68, defense:75, resources:65},
+  {name:"عمان", flag:"🇴🇲", role:"دفاع و دریا", economy:75, army:65, defense:88, resources:70},
+  {name:"ایران", flag:"🇮🇷", role:"قدرت نظامی بازی", economy:82, army:92, defense:90, resources:85}
+
+];
+
+const countriesBox = document.getElementById("countries");
+const statsBox = document.getElementById("stats");
+
+countries.forEach((country, index) => {
+
+  const card = document.createElement("div");
+
+  card.className = "country";
+
+  card.innerHTML = `
+    <div class="flag">${country.flag}</div>
+    <div class="country-name">${country.name}</div>
+    <div class="role">${country.role}</div>
+  `;
+
+  card.onclick = () => showCountry(country, card);
+
+  countriesBox.appendChild(card);
+
+});
+
+function showCountry(country, card) {
+
+  document.querySelectorAll(".country").forEach(c => {
+    c.classList.remove("selected");
+  });
+
+  card.classList.add("selected");
+
+  statsBox.style.display = "block";
+
+  statsBox.innerHTML = `
+
+    <h2>${country.flag} ${country.name}</h2>
+
+    <p>نقش: ${country.role}</p>
+
+    ${createStat("💰 اقتصاد", country.economy)}
+    ${createStat("⚔️ قدرت نظامی", country.army)}
+    ${createStat("🛡️ دفاع", country.defense)}
+    ${createStat("⛏️ منابع", country.resources)}
+
+    <button class="select-btn" onclick="selectCountry('${country.name}')">
+      انتخاب این قلمرو
+    </button>
+
+  `;
+
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
+
+function createStat(title, value) {
+
+  return `
+    <div class="stat">
+
+      <div class="stat-title">
+        <span>${title}</span>
+        <span>${value}/100</span>
+      </div>
+
+      <div class="bar">
+        <div class="fill" style="width:${value}%"></div>
+      </div>
+
+    </div>
+  `;
+}
+
+function selectCountry(name) {
+
+  alert(
+    "✅ قلمرو " + name +
+    " انتخاب شد!\n\nمرحله بعد: ساخت منطقه شخصی و قلعه بازیکن."
+  );
+
+}
+
+</script>
 
 </body>
 </html>
