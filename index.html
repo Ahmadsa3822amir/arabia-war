@@ -1356,3 +1356,1044 @@ function renderCountries() {
 /* =========================
    CREATE PLAYER
 ========= 
+/* =========================
+   CREATE PLAYER
+========================= */
+
+function createPlayer() {
+
+  const nameInput =
+    document.getElementById("playerName");
+
+  const name =
+    nameInput.value.trim();
+
+  if (!name) {
+
+    alert(
+      translations[currentLanguage].enterName
+    );
+
+    nameInput.focus();
+
+    return;
+
+  }
+
+  if (!selectedCountry) {
+
+    alert(
+      translations[currentLanguage].chooseCountry
+    );
+
+    return;
+
+  }
+
+
+  player.name = name;
+
+  player.country = selectedCountry.name;
+
+
+  /*
+    کشور انتخاب‌شده روی آمار اولیه
+    بازیکن تأثیر می‌گذارد.
+  */
+
+  player.power =
+    100 + Math.round(selectedCountry.army * 0.5);
+
+  player.defense =
+    100 + Math.round(selectedCountry.defense * 0.5);
+
+  player.population =
+    1000 + Math.round(
+      selectedCountry.army * 10
+    );
+
+  player.income =
+    10 + Math.round(
+      selectedCountry.economy / 10
+    );
+
+
+  /*
+    منابع اولیه
+  */
+
+  player.gold =
+    500 + Math.round(
+      selectedCountry.economy * 5
+    );
+
+  player.food =
+    500 + Math.round(
+      selectedCountry.army * 4
+    );
+
+  player.wood =
+    300 + Math.round(
+      selectedCountry.resources * 3
+    );
+
+  player.stone =
+    300 + Math.round(
+      selectedCountry.defense * 3
+    );
+
+  player.iron =
+    100 + Math.round(
+      selectedCountry.army * 2
+    );
+
+
+  saveGame();
+
+  showScreen("gameScreen");
+
+  updateGame();
+
+}
+
+
+/* =========================
+   UPDATE GAME
+========================= */
+
+function updateGame() {
+
+  if (!player.country) {
+    return;
+  }
+
+
+  const country =
+    countries.find(
+      c => c.name === player.country
+    );
+
+
+  /*
+    اطلاعات قلعه
+  */
+
+  document.getElementById(
+    "castleName"
+  ).textContent =
+    player.castleName;
+
+
+  document.getElementById(
+    "castleLevel"
+  ).textContent =
+    player.level;
+
+
+  document.getElementById(
+    "gameCountry"
+  ).textContent =
+    country
+      ? `${country.flag} ${country.name}`
+      : player.country;
+
+
+  /*
+    آمار
+  */
+
+  document.getElementById(
+    "power"
+  ).textContent =
+    Math.floor(player.power);
+
+
+  document.getElementById(
+    "defense"
+  ).textContent =
+    Math.floor(player.defense);
+
+
+  document.getElementById(
+    "population"
+  ).textContent =
+    Math.floor(player.population);
+
+
+  document.getElementById(
+    "income"
+  ).textContent =
+    Math.floor(player.income);
+
+
+  /*
+    منابع
+  */
+
+  document.getElementById(
+    "gold"
+  ).textContent =
+    Math.floor(player.gold);
+
+
+  document.getElementById(
+    "food"
+  ).textContent =
+    Math.floor(player.food);
+
+
+  document.getElementById(
+    "wood"
+  ).textContent =
+    Math.floor(player.wood);
+
+
+  document.getElementById(
+    "stone"
+  ).textContent =
+    Math.floor(player.stone);
+
+
+  document.getElementById(
+    "iron"
+  ).textContent =
+    Math.floor(player.iron);
+
+
+  renderBuildings();
+
+}
+
+
+/* =========================
+   BUILDINGS
+========================= */
+
+const buildingData = {
+
+  goldMine: {
+
+    name: "🪙 Gold Mine",
+
+    description:
+      "Produces gold every hour.",
+
+    cost: {
+
+      gold: 250,
+      wood: 100,
+      stone: 100
+
+    }
+
+  },
+
+
+  farm: {
+
+    name: "🌾 Farm",
+
+    description:
+      "Produces food and supports population.",
+
+    cost: {
+
+      gold: 150,
+      wood: 120,
+      stone: 50
+
+    }
+
+  },
+
+
+  woodCamp: {
+
+    name: "🪵 Wood Camp",
+
+    description:
+      "Produces wood for construction.",
+
+    cost: {
+
+      gold: 150,
+      wood: 50,
+      stone: 80
+
+    }
+
+  },
+
+
+  stoneMine: {
+
+    name: "🪨 Stone Mine",
+
+    description:
+      "Produces stone for buildings.",
+
+    cost: {
+
+      gold: 180,
+      wood: 80,
+      stone: 60
+
+    }
+
+  },
+
+
+  ironMine: {
+
+    name: "⛓️ Iron Mine",
+
+    description:
+      "Produces iron for the army.",
+
+    cost: {
+
+      gold: 300,
+      wood: 120,
+      stone: 180
+
+    }
+
+  },
+
+
+  barracks: {
+
+    name: "⚔️ Barracks",
+
+    description:
+      "Trains soldiers and increases power.",
+
+    cost: {
+
+      gold: 400,
+      wood: 200,
+      stone: 200,
+      iron: 50
+
+    }
+
+  }
+
+};
+
+
+/* =========================
+   RENDER BUILDINGS
+========================= */
+
+function renderBuildings() {
+
+  const box =
+    document.getElementById("buildings");
+
+  box.innerHTML = "";
+
+
+  Object.keys(buildingData).forEach(
+    key => {
+
+      const building =
+        buildingData[key];
+
+      const level =
+        player.buildings[key] || 1;
+
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "building";
+
+
+      let costText = "";
+
+
+      Object.keys(building.cost)
+        .forEach(resource => {
+
+          costText +=
+            `${resource}: ${building.cost[resource]}  `;
+
+        });
+
+
+      card.innerHTML = `
+
+        <div class="building-top">
+
+          <div class="building-name">
+            ${building.name}
+          </div>
+
+          <div class="building-level">
+            ${translations[currentLanguage].levelWord}
+            ${level}
+          </div>
+
+        </div>
+
+        <div class="building-info">
+
+          ${building.description}
+
+        </div>
+
+        <div class="building-info">
+
+          ${translations[currentLanguage].cost}:
+          ${costText}
+
+        </div>
+
+        <button
+          class="upgrade-button"
+          onclick="upgradeBuilding('${key}')"
+        >
+
+          ${translations[currentLanguage].upgrade}
+
+        </button>
+
+      `;
+
+
+      box.appendChild(card);
+
+    }
+  );
+
+}
+
+
+/* =========================
+   UPGRADE BUILDING
+========================= */
+
+function upgradeBuilding(key) {
+
+  const building =
+    buildingData[key];
+
+
+  if (!building) {
+    return;
+  }
+
+
+  const level =
+    player.buildings[key] || 1;
+
+
+  /*
+    با هر سطح، هزینه 1.5 برابر می‌شود.
+  */
+
+  const multiplier =
+    Math.pow(1.5, level - 1);
+
+
+  const cost = {};
+
+
+  Object.keys(building.cost)
+    .forEach(resource => {
+
+      cost[resource] =
+        Math.floor(
+          building.cost[resource] *
+          multiplier
+        );
+
+    });
+
+
+  /*
+    بررسی منابع
+  */
+
+  for (const resource of Object.keys(cost)) {
+
+    if (
+      player[resource] <
+      cost[resource]
+    ) {
+
+      alert(
+        translations[currentLanguage]
+          .insufficient
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  /*
+    کم کردن منابع
+  */
+
+  Object.keys(cost)
+    .forEach(resource => {
+
+      player[resource] -=
+        cost[resource];
+
+    });
+
+
+  /*
+    افزایش سطح ساختمان
+  */
+
+  player.buildings[key] =
+    level + 1;
+
+
+  /*
+    اثر ساختمان روی قلمرو
+  */
+
+  applyBuildingBonus(key);
+
+
+  saveGame();
+
+  updateGame();
+
+
+  alert(
+    translations[currentLanguage].saved
+  );
+
+}
+
+
+/* =========================
+   BUILDING BONUS
+========================= */
+
+function applyBuildingBonus(key) {
+
+  switch (key) {
+
+
+    case "goldMine":
+
+      player.income += 5;
+
+      break;
+
+
+    case "farm":
+
+      player.population += 100;
+
+      player.income += 1;
+
+      break;
+
+
+    case "woodCamp":
+
+      player.income += 1;
+
+      break;
+
+
+    case "stoneMine":
+
+      player.defense += 3;
+
+      break;
+
+
+    case "ironMine":
+
+      player.power += 5;
+
+      break;
+
+
+    case "barracks":
+
+      player.power += 20;
+
+      player.defense += 5;
+
+      break;
+
+  }
+
+}
+
+
+/* =========================
+   LANGUAGE SYSTEM
+========================= */
+
+function changeLanguage(language) {
+
+  if (!translations[language]) {
+    return;
+  }
+
+
+  currentLanguage =
+    language;
+
+
+  const t =
+    translations[language];
+
+
+  /*
+    جهت صفحه
+  */
+
+  if (language === "ar" ||
+      language === "fa") {
+
+    document.documentElement
+      .dir = "rtl";
+
+  } else {
+
+    document.documentElement
+      .dir = "ltr";
+
+  }
+
+
+  /*
+    متن‌ها
+  */
+
+  document.getElementById(
+    "welcomeTitle"
+  ).textContent =
+    t.welcomeTitle;
+
+
+  document.getElementById(
+    "welcomeText"
+  ).textContent =
+    t.welcomeText;
+
+
+  document.getElementById(
+    "profileTitle"
+  ).textContent =
+    t.profileTitle;
+
+
+  document.getElementById(
+    "nameLabel"
+  ).textContent =
+    t.nameLabel;
+
+
+  document.getElementById(
+    "playerName"
+  ).placeholder =
+    t.namePlaceholder;
+
+
+  document.getElementById(
+    "territoryTitle"
+  ).textContent =
+    t.territoryTitle;
+
+
+  document.getElementById(
+    "gameTitle"
+  ).textContent =
+    t.gameTitle;
+
+
+  document.getElementById(
+    "levelText"
+  ).textContent =
+    t.level;
+
+
+  document.getElementById(
+    "territoryText"
+  ).textContent =
+    t.territory;
+
+
+  document.getElementById(
+    "playerStatsTitle"
+  ).textContent =
+    t.playerStats;
+
+
+  document.getElementById(
+    "powerLabel"
+  ).textContent =
+    t.power;
+
+
+  document.getElementById(
+    "defenseLabel"
+  ).textContent =
+    t.defense;
+
+
+  document.getElementById(
+    "populationLabel"
+  ).textContent =
+    t.population;
+
+
+  document.getElementById(
+    "incomeLabel"
+  ).textContent =
+    t.income;
+
+
+  document.getElementById(
+    "resourcesTitle"
+  ).textContent =
+    t.resources;
+
+
+  document.getElementById(
+    "buildingsTitle"
+  ).textContent =
+    t.buildings;
+
+
+  document.getElementById(
+    "incomeNotice"
+  ).textContent =
+    t.incomeNotice;
+
+
+  /*
+    دکمه‌ها
+  */
+
+  const buttons =
+    document.querySelectorAll(
+      ".main-button"
+    );
+
+
+  if (buttons.length >= 2) {
+
+    buttons[1].textContent =
+      t.enterGame;
+
+  }
+
+
+  const resetButton =
+    document.querySelector(
+      ".small-button"
+    );
+
+
+  if (resetButton) {
+
+    resetButton.textContent =
+      t.reset;
+
+  }
+
+
+  /*
+    بازسازی ساختمان‌ها
+  */
+
+  renderBuildings();
+
+}
+
+
+/* =========================
+   RESET GAME
+========================= */
+
+function resetGame() {
+
+  const confirmReset =
+    confirm(
+      "Are you sure you want to reset the game?"
+    );
+
+
+  if (!confirmReset) {
+    return;
+  }
+
+
+  localStorage.removeItem(
+    "arabiaWarPlayer"
+  );
+
+
+  player = {
+
+    name: "",
+
+    country: null,
+
+    castleName: "Lion Castle",
+
+    level: 1,
+
+    power: 100,
+
+    defense: 100,
+
+    population: 1000,
+
+    income: 10,
+
+    gold: 500,
+
+    food: 500,
+
+    wood: 300,
+
+    stone: 300,
+
+    iron: 100,
+
+    buildings: {
+
+      goldMine: 1,
+
+      farm: 1,
+
+      woodCamp: 1,
+
+      stoneMine: 1,
+
+      ironMine: 1,
+
+      barracks: 1
+
+    }
+
+  };
+
+
+  selectedCountry = null;
+
+
+  document.getElementById(
+    "playerName"
+  ).value = "";
+
+
+  document.getElementById(
+    "selectedCountryBox"
+  ).innerHTML = "";
+
+
+  document.querySelectorAll(
+    ".country"
+  ).forEach(card => {
+
+    card.classList.remove(
+      "selected"
+    );
+
+  });
+
+
+  showScreen(
+    "welcomeScreen"
+  );
+
+}
+
+
+/* =========================
+   PASSIVE INCOME
+========================= */
+
+let lastIncomeTime =
+  Date.now();
+
+
+function collectPassiveIncome() {
+
+  if (!player.country) {
+    return;
+  }
+
+
+  const now =
+    Date.now();
+
+
+  const elapsed =
+    now - lastIncomeTime;
+
+
+  /*
+    تبدیل میلی‌ثانیه به ساعت
+  */
+
+  const hours =
+    elapsed /
+    (1000 * 60 * 60);
+
+
+  if (hours <= 0) {
+    return;
+  }
+
+
+  /*
+    حداکثر 24 ساعت درآمد
+    برای جلوگیری از افزایش
+    بیش از حد منابع
+  */
+
+  const effectiveHours =
+    Math.min(hours, 24);
+
+
+  /*
+    درآمد طلا
+  */
+
+  player.gold +=
+    player.income *
+    effectiveHours;
+
+
+  /*
+    درآمد غذا
+  */
+
+  const farmLevel =
+    player.buildings.farm || 1;
+
+
+  player.food +=
+    farmLevel *
+    5 *
+    effectiveHours;
+
+
+  /*
+    درآمد چوب
+  */
+
+  const woodLevel =
+    player.buildings.woodCamp || 1;
+
+
+  player.wood +=
+    woodLevel *
+    4 *
+    effectiveHours;
+
+
+  /*
+    درآمد سنگ
+  */
+
+  const stoneLevel =
+    player.buildings.stoneMine || 1;
+
+
+  player.stone +=
+    stoneLevel *
+    3 *
+    effectiveHours;
+
+
+  /*
+    درآمد آهن
+  */
+
+  const ironLevel =
+    player.buildings.ironMine || 1;
+
+
+  player.iron +=
+    ironLevel *
+    2 *
+    effectiveHours;
+
+
+  lastIncomeTime =
+    now;
+
+
+  saveGame();
+
+  updateGame();
+
+}
+
+
+/* =========================
+   STARTUP
+========================= */
+
+renderCountries();
+
+loadGame();
+
+
+/*
+  هر دقیقه منابع بررسی می‌شوند
+*/
+
+setInterval(
+  collectPassiveIncome,
+  60 * 1000
+);
+
+
+/*
+  وقتی کاربر دوباره صفحه را
+  باز می‌کند، درآمد زمان گذشته
+  محاسبه می‌شود.
+*/
+
+window.addEventListener(
+  "load",
+  function() {
+
+    lastIncomeTime =
+      Date.now();
+
+    collectPassiveIncome();
+
+  }
+);
+
+
+/*
+  هنگام خروج/بستن صفحه ذخیره شود
+*/
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    saveGame();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
