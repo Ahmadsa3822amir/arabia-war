@@ -6,90 +6,1353 @@
   <title>Arabia War</title>
 
   <style>
-    body {
-      margin: 0;
-      background: #101820;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 30px 15px;
+
+    * {
+      box-sizing: border-box;
     }
 
-    h1 {
+    body {
+      margin: 0;
+      background: #0d151b;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    header {
+      background: #121f28;
+      border-bottom: 1px solid #293c47;
+      padding: 18px 12px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
       color: #f0b24a;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 7px 0;
+      color: #aebbc3;
+    }
+
+    .language-box {
+      margin-top: 10px;
+    }
+
+    .language-box button {
+      background: #263945;
+      color: white;
+      border: 1px solid #405563;
+      padding: 8px 11px;
+      margin: 3px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
     }
 
     .box {
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 25px;
-      background: #182733;
-      border-radius: 15px;
+      background: #172630;
+      border: 1px solid #2b414e;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
     }
 
-    button {
+    .center {
+      text-align: center;
+    }
+
+    h2 {
+      color: #f0b24a;
+    }
+
+    .main-button {
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      padding: 14px;
       background: #d89b32;
       color: white;
-      border: 0;
-      padding: 12px 20px;
-      margin: 5px;
-      border-radius: 8px;
-      font-size: 16px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 10px;
     }
+
+    .main-button:hover {
+      background: #e5aa3e;
+    }
+
+    .secondary-button {
+      width: 100%;
+      border: 1px solid #405563;
+      border-radius: 11px;
+      padding: 12px;
+      background: #263945;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #405563;
+      background: #0f1b22;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #f0b24a;
+    }
+
+    .countries {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 11px;
+    }
+
+    .country {
+      background: #182832;
+      border: 1px solid #2b414e;
+      border-radius: 13px;
+      padding: 15px 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .country:hover {
+      border-color: #f0b24a;
+      background: #213642;
+    }
+
+    .country.selected {
+      border-color: #f0b24a;
+      box-shadow: 0 0 12px rgba(240,178,74,.25);
+    }
+
+    .flag {
+      font-size: 30px;
+    }
+
+    .country-name {
+      font-weight: bold;
+      margin-top: 7px;
+    }
+
+    .role {
+      color: #aebbc3;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .selected-country {
+      text-align: center;
+      background: #182832;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+
+    .big-flag {
+      font-size: 55px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: #182832;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid #2b414e;
+    }
+
+    .stat-card .icon {
+      font-size: 25px;
+    }
+
+    .stat-card .value {
+      font-size: 21px;
+      font-weight: bold;
+      margin-top: 5px;
+      color: #f0b24a;
+    }
+
+    .stat-card .label {
+      color: #aebbc3;
+      font-size: 12px;
+    }
+
+    .castle {
+      text-align: center;
+      background: linear-gradient(#1b303c, #13232c);
+      padding: 25px 15px;
+      border-radius: 16px;
+      border: 1px solid #405563;
+      margin-bottom: 18px;
+    }
+
+    .castle-icon {
+      font-size: 75px;
+    }
+
+    .castle-name {
+      font-size: 25px;
+      color: #f0b24a;
+      font-weight: bold;
+      margin: 8px;
+    }
+
+    .level {
+      color: #aebbc3;
+    }
+
+    .resource-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .resource {
+      background: #182832;
+      border-radius: 11px;
+      padding: 12px;
+      border: 1px solid #2b414e;
+    }
+
+    .resource-title {
+      color: #aebbc3;
+      font-size: 13px;
+    }
+
+    .resource-value {
+      font-size: 20px;
+      margin-top: 4px;
+      color: #f0b24a;
+      font-weight: bold;
+    }
+
+    .building {
+      background: #182832;
+      border: 1px solid #2b414e;
+      border-radius: 13px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .building-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .building-name {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .building-level {
+      color: #f0b24a;
+    }
+
+    .building-info {
+      color: #aebbc3;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .upgrade-button {
+      width: 100%;
+      background: #344b58;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .upgrade-button:hover {
+      background: #486271;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .small-button {
+      background: #263945;
+      color: white;
+      border: 1px solid #405563;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .notice {
+      background: #15252e;
+      border: 1px solid #344b58;
+      border-radius: 10px;
+      padding: 12px;
+      color: #c6d1d7;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    @media(max-width:500px) {
+
+      .profile-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .countries {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
   </style>
 </head>
 
 <body>
 
+<header>
+
   <h1>⚔️ Arabia War</h1>
 
-  <div class="box">
+  <p id="version">Beta Version 0.5</p>
 
-    <h2>🌍 Choose Your Language</h2>
+  <div class="language-box">
 
-    <button onclick="setLanguage('en')">
+    <button onclick="changeLanguage('en')">
       🇬🇧 English
     </button>
 
-    <button onclick="setLanguage('ar')">
+    <button onclick="changeLanguage('ar')">
       🇸🇦 العربية
     </button>
 
-    <button onclick="setLanguage('fa')">
+    <button onclick="changeLanguage('fa')">
       🇮🇷 فارسی
     </button>
 
-    <p id="message">Game is ready.</p>
-
   </div>
+
+</header>
+
+
+<div class="container">
+
+
+  <!-- SCREEN 1 -->
+
+  <section id="welcomeScreen" class="screen active">
+
+    <div class="box center">
+
+      <h2 id="welcomeTitle">
+        ⚔️ Welcome to Arabia War
+      </h2>
+
+      <p id="welcomeText">
+        Build your territory, develop your castle and prepare your army.
+      </p>
+
+      <button class="main-button" onclick="showScreen('profileScreen')">
+
+        🎮 Start Game
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- SCREEN 2 -->
+
+  <section id="profileScreen" class="screen">
+
+    <div class="box">
+
+      <h2 id="profileTitle">
+        👤 Create Your Profile
+      </h2>
+
+      <p id="nameLabel">
+        Player Name
+      </p>
+
+      <input
+        id="playerName"
+        type="text"
+        maxlength="20"
+        placeholder="Enter your name"
+      >
+
+      <h3 id="territoryTitle">
+        🌍 Choose Your Territory
+      </h3>
+
+      <div class="countries" id="countries"></div>
+
+      <div id="selectedCountryBox"></div>
+
+      <button class="main-button" onclick="createPlayer()">
+
+        ⚔️ Enter The Game
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- SCREEN 3 -->
+
+  <section id="gameScreen" class="screen">
+
+    <div class="top-bar">
+
+      <strong id="gameTitle">
+        🏰 My Kingdom
+      </strong>
+
+      <button class="small-button" onclick="resetGame()">
+        🔄 Reset
+      </button>
+
+    </div>
+
+
+    <div class="castle">
+
+      <div class="castle-icon">
+        🏰
+      </div>
+
+      <div class="castle-name" id="castleName">
+        Lion Castle
+      </div>
+
+      <div class="level">
+        <span id="levelText">Level</span>
+        <span id="castleLevel">1</span>
+      </div>
+
+      <p id="territoryText">
+        Territory
+      </p>
+
+      <div id="gameCountry">
+        🇮🇶 Iraq
+      </div>
+
+    </div>
+
+
+
+    <div class="box">
+
+      <h2 id="playerStatsTitle">
+        📊 Kingdom Statistics
+      </h2>
+
+      <div class="profile-grid">
+
+        <div class="stat-card">
+
+          <div class="icon">⚔️</div>
+
+          <div class="value" id="power">
+            100
+          </div>
+
+          <div class="label" id="powerLabel">
+            Power
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="icon">🛡️</div>
+
+          <div class="value" id="defense">
+            100
+          </div>
+
+          <div class="label" id="defenseLabel">
+            Defense
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="icon">👥</div>
+
+          <div class="value" id="population">
+            1000
+          </div>
+
+          <div class="label" id="populationLabel">
+            Population
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="icon">📈</div>
+
+          <div class="value" id="income">
+            10
+          </div>
+
+          <div class="label" id="incomeLabel">
+            Gold / Hour
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="box">
+
+      <h2 id="resourcesTitle">
+        💰 Resources
+      </h2>
+
+      <div class="resource-row">
+
+        <div class="resource">
+
+          <div class="resource-title">
+            🪙 Gold
+          </div>
+
+          <div class="resource-value" id="gold">
+            500
+          </div>
+
+        </div>
+
+
+        <div class="resource">
+
+          <div class="resource-title">
+            🌾 Food
+          </div>
+
+          <div class="resource-value" id="food">
+            500
+          </div>
+
+        </div>
+
+
+        <div class="resource">
+
+          <div class="resource-title">
+            🪵 Wood
+          </div>
+
+          <div class="resource-value" id="wood">
+            300
+          </div>
+
+        </div>
+
+
+        <div class="resource">
+
+          <div class="resource-title">
+            🪨 Stone
+          </div>
+
+          <div class="resource-value" id="stone">
+            300
+          </div>
+
+        </div>
+
+
+        <div class="resource">
+
+          <div class="resource-title">
+            ⛓️ Iron
+          </div>
+
+          <div class="resource-value" id="iron">
+            100
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="notice" id="incomeNotice">
+        Resources are currently stored locally on this device.
+      </div>
+
+    </div>
+
+
+
+    <div class="box">
+
+      <h2 id="buildingsTitle">
+        🏗️ Buildings
+      </h2>
+
+      <div id="buildings"></div>
+
+    </div>
+
+
+  </section>
+
+
+</div>
+
+
 
 <script>
 
-function setLanguage(language) {
 
-  const message = document.getElementById("message");
+/* =========================
+   LANGUAGES
+========================= */
 
-  if (language === "en") {
-    document.documentElement.lang = "en";
-    document.documentElement.dir = "ltr";
-    message.innerText = "Game is ready.";
+const translations = {
+
+  en: {
+
+    welcomeTitle: "⚔️ Welcome to Arabia War",
+
+    welcomeText:
+      "Build your territory, develop your castle and prepare your army.",
+
+    profileTitle:
+      "👤 Create Your Profile",
+
+    nameLabel:
+      "Player Name",
+
+    namePlaceholder:
+      "Enter your name",
+
+    territoryTitle:
+      "🌍 Choose Your Territory",
+
+    enterGame:
+      "⚔️ Enter The Game",
+
+    gameTitle:
+      "🏰 My Kingdom",
+
+    level:
+      "Level",
+
+    territory:
+      "Territory",
+
+    playerStats:
+      "📊 Kingdom Statistics",
+
+    power:
+      "Power",
+
+    defense:
+      "Defense",
+
+    population:
+      "Population",
+
+    income:
+      "Gold / Hour",
+
+    resources:
+      "💰 Resources",
+
+    buildings:
+      "🏗️ Buildings",
+
+    upgrade:
+      "Upgrade",
+
+    levelWord:
+      "Level",
+
+    cost:
+      "Cost",
+
+    insufficient:
+      "Not enough resources.",
+
+    reset:
+      "🔄 Reset",
+
+    saved:
+      "Game saved.",
+
+    enterName:
+      "Please enter your player name.",
+
+    chooseCountry:
+      "Please choose a territory.",
+
+    selected:
+      "Selected",
+
+    incomeNotice:
+      "Resources are stored locally on this device."
+
+  },
+
+
+  ar: {
+
+    welcomeTitle:
+      "⚔️ مرحباً بك في Arabia War",
+
+    welcomeText:
+      "ابنِ منطقتك وطوّر قلعتك واستعد لجيشك.",
+
+    profileTitle:
+      "👤 إنشاء ملف اللاعب",
+
+    nameLabel:
+      "اسم اللاعب",
+
+    namePlaceholder:
+      "اكتب اسمك",
+
+    territoryTitle:
+      "🌍 اختر منطقتك",
+
+    enterGame:
+      "⚔️ دخول اللعبة",
+
+    gameTitle:
+      "🏰 مملكتي",
+
+    level:
+      "المستوى",
+
+    territory:
+      "المنطقة",
+
+    playerStats:
+      "📊 إحصائيات المملكة",
+
+    power:
+      "القوة",
+
+    defense:
+      "الدفاع",
+
+    population:
+      "السكان",
+
+    income:
+      "ذهب / ساعة",
+
+    resources:
+      "💰 الموارد",
+
+    buildings:
+      "🏗️ المباني",
+
+    upgrade:
+      "تطوير",
+
+    levelWord:
+      "المستوى",
+
+    cost:
+      "التكلفة",
+
+    insufficient:
+      "الموارد غير كافية.",
+
+    reset:
+      "🔄 إعادة ضبط",
+
+    saved:
+      "تم حفظ اللعبة.",
+
+    enterName:
+      "اكتب اسم اللاعب أولاً.",
+
+    chooseCountry:
+      "اختر منطقة أولاً.",
+
+    selected:
+      "تم الاختيار",
+
+    incomeNotice:
+      "يتم حفظ الموارد على هذا الجهاز."
+
+  },
+
+
+  fa: {
+
+    welcomeTitle:
+      "⚔️ به Arabia War خوش آمدید",
+
+    welcomeText:
+      "قلمرو خود را بسازید، قلعه را ارتقا دهید و ارتش خود را آماده کنید.",
+
+    profileTitle:
+      "👤 ساخت پروفایل بازیکن",
+
+    nameLabel:
+      "نام بازیکن",
+
+    namePlaceholder:
+      "نام خود را وارد کنید",
+
+    territoryTitle:
+      "🌍 قلمرو خود را انتخاب کنید",
+
+    enterGame:
+      "⚔️ ورود به بازی",
+
+    gameTitle:
+      "🏰 قلمرو من",
+
+    level:
+      "سطح",
+
+    territory:
+      "قلمرو",
+
+    playerStats:
+      "📊 آمار قلمرو",
+
+    power:
+      "قدرت",
+
+    defense:
+      "دفاع",
+
+    population:
+      "جمعیت",
+
+    income:
+      "طلا / ساعت",
+
+    resources:
+      "💰 منابع",
+
+    buildings:
+      "🏗️ ساختمان‌ها",
+
+    upgrade:
+      "ارتقا",
+
+    levelWord:
+      "سطح",
+
+    cost:
+      "هزینه",
+
+    insufficient:
+      "منابع کافی نیست.",
+
+    reset:
+      "🔄 شروع مجدد",
+
+    saved:
+      "بازی ذخیره شد.",
+
+    enterName:
+      "لطفاً نام بازیکن را وارد کنید.",
+
+    chooseCountry:
+      "لطفاً یک قلمرو انتخاب کنید.",
+
+    selected:
+      "انتخاب شد",
+
+    incomeNotice:
+      "منابع فعلاً روی همین دستگاه ذخیره می‌شوند."
+
   }
 
-  if (language === "ar") {
-    document.documentElement.lang = "ar";
-    document.documentElement.dir = "rtl";
-    message.innerText = "اللعبة جاهزة.";
+};
+
+
+let currentLanguage = "en";
+
+
+/* =========================
+   COUNTRIES
+========================= */
+
+const countries = [
+
+  {
+    name: "Egypt",
+    flag: "🇪🇬",
+    role: "Manpower",
+    economy: 70,
+    army: 75,
+    defense: 65,
+    resources: 65
+  },
+
+  {
+    name: "Saudi Arabia",
+    flag: "🇸🇦",
+    role: "Economy",
+    economy: 95,
+    army: 70,
+    defense: 65,
+    resources: 90
+  },
+
+  {
+    name: "Iraq",
+    flag: "🇮🇶",
+    role: "Balanced",
+    economy: 70,
+    army: 78,
+    defense: 72,
+    resources: 85
+  },
+
+  {
+    name: "Syria",
+    flag: "🇸🇾",
+    role: "Land Defense",
+    economy: 50,
+    army: 70,
+    defense: 88,
+    resources: 60
+  },
+
+  {
+    name: "Lebanon",
+    flag: "🇱🇧",
+    role: "Trade",
+    economy: 75,
+    army: 50,
+    defense: 55,
+    resources: 45
+  },
+
+  {
+    name: "Jordan",
+    flag: "🇯🇴",
+    role: "Defense",
+    economy: 60,
+    army: 65,
+    defense: 85,
+    resources: 45
+  },
+
+  {
+    name: "Palestine",
+    flag: "🇵🇸",
+    role: "Regional Defense",
+    economy: 45,
+    army: 55,
+    defense: 82,
+    resources: 40
+  },
+
+  {
+    name: "Yemen",
+    flag: "🇾🇪",
+    role: "Attrition Defense",
+    economy: 40,
+    army: 65,
+    defense: 85,
+    resources: 55
+  },
+
+  {
+    name: "Libya",
+    flag: "🇱🇾",
+    role: "Resources",
+    economy: 70,
+    army: 60,
+    defense: 55,
+    resources: 95
+  },
+
+  {
+    name: "Tunisia",
+    flag: "🇹🇳",
+    role: "Trade",
+    economy: 70,
+    army: 55,
+    defense: 60,
+    resources: 50
+  },
+
+  {
+    name: "Algeria",
+    flag: "🇩🇿",
+    role: "Large Territory",
+    economy: 75,
+    army: 80,
+    defense: 85,
+    resources: 80
+  },
+
+  {
+    name: "Morocco",
+    flag: "🇲🇦",
+    role: "Economy & Trade",
+    economy: 82,
+    army: 70,
+    defense: 72,
+    resources: 65
+  },
+
+  {
+    name: "Mauritania",
+    flag: "🇲🇷",
+    role: "Resources",
+    economy: 45,
+    army: 45,
+    defense: 55,
+    resources: 80
+  },
+
+  {
+    name: "Sudan",
+    flag: "🇸🇩",
+    role: "Manpower",
+    economy: 50,
+    army: 68,
+    defense: 65,
+    resources: 75
+  },
+
+  {
+    name: "Somalia",
+    flag: "🇸🇴",
+    role: "Maritime Position",
+    economy: 40,
+    army: 50,
+    defense: 60,
+    resources: 55
+  },
+
+  {
+    name: "Djibouti",
+    flag: "🇩🇯",
+    role: "Trade Port",
+    economy: 60,
+    army: 40,
+    defense: 65,
+    resources: 45
+  },
+
+  {
+    name: "Comoros",
+    flag: "🇰🇲",
+    role: "Island Territory",
+    economy: 35,
+    army: 35,
+    defense: 75,
+    resources: 40
+  },
+
+  {
+    name: "Kuwait",
+    flag: "🇰🇼",
+    role: "Strong Economy",
+    economy: 92,
+    army: 55,
+    defense: 65,
+    resources: 70
+  },
+
+  {
+    name: "Bahrain",
+    flag: "🇧🇭",
+    role: "Trade",
+    economy: 80,
+    army: 45,
+    defense: 60,
+    resources: 45
+  },
+
+  {
+    name: "Qatar",
+    flag: "🇶🇦",
+    role: "Economy",
+    economy: 96,
+    army: 50,
+    defense: 65,
+    resources: 60
+  },
+
+  {
+    name: "United Arab Emirates",
+    flag: "🇦🇪",
+    role: "Economy & Technology",
+    economy: 94,
+    army: 68,
+    defense: 75,
+    resources: 65
+  },
+
+  {
+    name: "Oman",
+    flag: "🇴🇲",
+    role: "Defense & Navy",
+    economy: 75,
+    army: 65,
+    defense: 88,
+    resources: 70
+  },
+
+  {
+    name: "Iran",
+    flag: "🇮🇷",
+    role: "Military Power",
+    economy: 82,
+    army: 92,
+    defense: 90,
+    resources: 85
   }
 
-  if (language === "fa") {
-    document.documentElement.lang = "fa";
-    document.documentElement.dir = "rtl";
-    message.innerText = "بازی آماده است.";
+];
+
+
+/* =========================
+   PLAYER DATA
+========================= */
+
+let player = {
+
+  name: "",
+
+  country: null,
+
+  castleName: "Lion Castle",
+
+  level: 1,
+
+  power: 100,
+
+  defense: 100,
+
+  population: 1000,
+
+  income: 10,
+
+  gold: 500,
+
+  food: 500,
+
+  wood: 300,
+
+  stone: 300,
+
+  iron: 100,
+
+  buildings: {
+
+    goldMine: 1,
+
+    farm: 1,
+
+    woodCamp: 1,
+
+    stoneMine: 1,
+
+    ironMine: 1,
+
+    barracks: 1
+
+  }
+
+};
+
+
+let selectedCountry = null;
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveGame() {
+
+  localStorage.setItem(
+    "arabiaWarPlayer",
+    JSON.stringify(player)
+  );
+
+}
+
+
+function loadGame() {
+
+  const saved = localStorage.getItem(
+    "arabiaWarPlayer"
+  );
+
+  if (saved) {
+
+    player = JSON.parse(saved);
+
+    if (player.country) {
+
+      showScreen("gameScreen");
+
+      updateGame();
+
+    }
+
   }
 
 }
 
-</script>
 
-</body>
-</html>
+/* =========================
+   SCREEN SYSTEM
+========================= */
+
+function showScreen(screenId) {
+
+  document.querySelectorAll(".screen")
+    .forEach(screen => {
+      screen.classList.remove("active");
+    });
+
+  document.getElementById(screenId)
+    .classList.add("active");
+
+}
+
+
+/* =========================
+   COUNTRY LIST
+========================= */
+
+function renderCountries() {
+
+  const box =
+    document.getElementById("countries");
+
+  box.innerHTML = "";
+
+  countries.forEach(country => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "country";
+
+    card.innerHTML = `
+
+      <div class="flag">
+        ${country.flag}
+      </div>
+
+      <div class="country-name">
+        ${country.name}
+      </div>
+
+      <div class="role">
+        ${country.role}
+      </div>
+
+    `;
+
+    card.onclick = function() {
+
+      document
+        .querySelectorAll(".country")
+        .forEach(item =>
+          item.classList.remove("selected")
+        );
+
+      card.classList.add("selected");
+
+      selectedCountry = country;
+
+      document.getElementById(
+        "selectedCountryBox"
+      ).innerHTML = `
+
+        <div class="selected-country">
+
+          <div class="big-flag">
+            ${country.flag}
+          </div>
+
+          <strong>
+            ${country.name}
+          </strong>
+
+          <p>
+            ${country.role}
+          </p>
+
+        </div>
+
+      `;
+
+    };
+
+    box.appendChild(card);
+
+  });
+
+}
+
+
+/* =========================
+   CREATE PLAYER
+========= 
