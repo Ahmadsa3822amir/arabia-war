@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,118 +6,90 @@
   <title>Arabia War</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      background: #0d151b;
+      background: #101820;
       color: white;
       font-family: Arial, sans-serif;
-    }
-
-    header {
       text-align: center;
-      padding: 20px 15px;
-      background: #121f28;
-      border-bottom: 1px solid #263945;
+      padding: 30px 15px;
     }
 
-    header h1 {
-      margin: 0;
+    h1 {
       color: #f0b24a;
-      font-size: 32px;
     }
 
-    header p {
-      color: #aebbc3;
-      margin: 8px 0;
+    .box {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 25px;
+      background: #182733;
+      border-radius: 15px;
     }
 
-    .language-box {
-      margin-top: 12px;
-    }
-
-    .language-box button {
-      background: #263945;
+    button {
+      background: #d89b32;
       color: white;
-      border: 1px solid #405563;
-      padding: 8px 12px;
+      border: 0;
+      padding: 12px 20px;
+      margin: 5px;
       border-radius: 8px;
-      margin: 3px;
-      cursor: pointer;
+      font-size: 16px;
     }
+  </style>
+</head>
 
-    .language-box button:hover {
-      border-color: #f0b24a;
-    }
+<body>
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
+  <h1>⚔️ Arabia War</h1>
 
-    .welcome {
-      text-align: center;
-      background: #172630;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
+  <div class="box">
 
-    .welcome h2 {
-      margin-top: 0;
-      color: #f0b24a;
-    }
+    <h2>🌍 Choose Your Language</h2>
 
-    .countries {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-    }
+    <button onclick="setLanguage('en')">
+      🇬🇧 English
+    </button>
 
-    .country {
-      background: #182832;
-      border: 1px solid #2b414e;
-      border-radius: 14px;
-      padding: 16px 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+    <button onclick="setLanguage('ar')">
+      🇸🇦 العربية
+    </button>
 
-    .country:hover {
-      transform: translateY(-3px);
-      border-color: #f0b24a;
-      background: #213642;
-    }
+    <button onclick="setLanguage('fa')">
+      🇮🇷 فارسی
+    </button>
 
-    .flag {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
+    <p id="message">Game is ready.</p>
 
-    .country-name {
-      font-size: 17px;
-      font-weight: bold;
-    }
+  </div>
 
-    .role {
-      color: #aebbc3;
-      font-size: 12px;
-      margin-top: 6px;
-    }
+<script>
 
-    .stats {
-      display: none;
-      background: #172630;
-      border-radius: 15px;
-      padding: 20px;
-      margin-top: 20px;
-      border: 1px solid #3a4e5a;
-    }
+function setLanguage(language) {
 
-    .stats h2 {
-     
+  const message = document.getElementById("message");
+
+  if (language === "en") {
+    document.documentElement.lang = "en";
+    document.documentElement.dir = "ltr";
+    message.innerText = "Game is ready.";
+  }
+
+  if (language === "ar") {
+    document.documentElement.lang = "ar";
+    document.documentElement.dir = "rtl";
+    message.innerText = "اللعبة جاهزة.";
+  }
+
+  if (language === "fa") {
+    document.documentElement.lang = "fa";
+    document.documentElement.dir = "rtl";
+    message.innerText = "بازی آماده است.";
+  }
+
+}
+
+</script>
+
+</body>
+</html>
